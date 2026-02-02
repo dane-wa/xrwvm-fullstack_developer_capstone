@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Link the style sheet here -->
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="/static/bootstrap.min.css" />
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-light"
+      style="background-color: darkturquoise; height: 1in"
+    >
+      <div class="container-fluid">
+        <h2 style="padding-right: 5%">Dealerships</h2>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                style="font-size: larger"
+                aria-current="page"
+                href="/"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="font-size: larger" href="/about"
+                >About Us</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                style="font-size: larger"
+                href="/contact"
+                >Contact Us</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <!-- Cadre -->
+          <div class="card shadow border-0">
+            <!-- Image en haut -->
+            <img
+              src="/static/cars.jpeg"
+              class="card-img-top"
+              alt="Image voitures"
+              style="max-width: 700px"
+            />
+
+            <!-- Contenu -->
+            <div class="card-body p-4">
+              <!-- Logo + texte côte à côte -->
+              <div class="row align-items-center mb-4">
+                <!-- Logo -->
+                <div class="col-md-4 text-center mb-3 mb-md-0">
+                  <img
+                    src="/static/contactus.png"
+                    alt="Logo contact"
+                    class="img-fluid"
+                    style="max-width: 120px"
+                  />
+                </div>
+
+                <!-- Texte service -->
+                <div class="col-md-8">
+                  <h4 class="mb-2">Notre service</h4>
+                  <p class="text-muted mb-0">
+                    Nous accompagnons nos clients dans la création de solutions
+                    digitales modernes, fiables et adaptées à leurs besoins.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Infos de contact -->
+              <hr />
+
+              <p><strong>Email :</strong> contact@exemple.com</p>
+              <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
+              <p>
+                <strong>Adresse :</strong> 10 Rue de l’Innovation, 75000 Paris
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
