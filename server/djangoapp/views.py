@@ -37,14 +37,46 @@ def login_user(request):
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
 
-# Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+# Créer une vue logout_request pour gérer la demande de déconnexion.
+def logout_request(request):
+    logout(request) # Mettre fin à la session de l’utilisateur
+    data = {"userName":""} # Retourner un nom d’utilisateur vide
+    return JsonResponse(data)
 
-# Create a `registration` view to handle sign up request
-# @csrf_exempt
-# def registration(request):
-# ...
+# Crée une vue registration pour gérer les requêtes d’inscription.
+@csrf_exempt
+def registration(request):
+    context = {}
+
+    # Charger les données JSON à partir du corps de la requête.
+    data = json.loads(request.body)
+    username = data['userName']
+    password = data['password']
+    first_name = data['firstName']
+    last_name = data['lastName']
+    email = data['email']
+    username_exist = False
+    email_exist = False
+    try:
+        # Vérifier si l’utilisateur existe déjà
+        User.objects.get(username=username)
+        username_exist = True
+    except:
+        # S’il n’y en a pas, enregistrez simplement que c’est un nouvel utilisateur.
+        logger.debug("{} is new user".format(username))
+
+    # S’il s’agit d’un nouvel utilisateur
+    if not username_exist:
+        # Créer un utilisateur dans la table auth_user
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=password, email=email)
+        # Connecter l’utilisateur et le rediriger vers la page de liste.
+        login(request, user)
+        data = {"userName":username,"status":"Authenticated"}
+        return JsonResponse(data)
+    else :
+        data = {"userName":username,"error":"Already Registered"}
+        return JsonResponse(data)
+
 
 # # Update the `get_dealerships` view to render the index page with
 # a list of dealerships
