@@ -103,7 +103,7 @@ def get_cars(request):
 
 
 def get_dealerships(request, state="All"):
-    a list of dealerships
+    # a list of dealerships
     # def get_dealerships(request):
     # update the `get_dealerships` render list
     # of dealerships all by default, particular state if state is passed
