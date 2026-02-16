@@ -1,13 +1,12 @@
 # Uncomment the required imports before adding the code
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout, login, authenticate
-from django.contrib import messages
-from datetime import datetime
-from .restapis import get_request, analyze_review_sentiments, post_review
+from .restapis import (
+    get_request,
+    analyze_review_sentiments,
+    post_review,
+)
 
 from django.http import JsonResponse
 import logging
@@ -26,15 +25,18 @@ logger = logging.getLogger(__name__)
 # Crée une vue login_request pour gérer les requêtes de connexion.
 @csrf_exempt
 def login_user(request):
-    # Récupérer le nom d’utilisateur et le mot de passe depuis le dictionnaire request.POST
+    # Récupérer le nom d’utilisateur et 
+    # le mot de passe depuis le dictionnaire request.POST
     data = json.loads(request.body)
     username = data['userName']
     password = data['password']
-    # Essaie de vérifier si les identifiants fournis peuvent être authentifiés.
+    # Essaie de vérifier si les identifiants
+    # fournis peuvent être authentifiés.
     user = authenticate(username=username, password=password)
     data = {"userName": username}
     if user is not None:
-        # Si l’utilisateur est valide, appeler la méthode login pour connecter l’utilisateur courant.
+        # Si l’utilisateur est valide, appeler 
+        # la méthode login pour connecter l’utilisateur courant.
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
@@ -48,8 +50,6 @@ def logout_request(request):
 # Crée une vue registration pour gérer les requêtes d’inscription.
 @csrf_exempt
 def registration(request):
-    context = {}
-
     # Charger les données JSON à partir du corps de la requête.
     data = json.loads(request.body)
     username = data['userName']
@@ -58,19 +58,25 @@ def registration(request):
     last_name = data['lastName']
     email = data['email']
     username_exist = False
-    email_exist = False
     try:
         # Vérifier si l’utilisateur existe déjà
         User.objects.get(username=username)
         username_exist = True
-    except:
-        # S’il n’y en a pas, enregistrez simplement que c’est un nouvel utilisateur.
+    except User.DoesNotExist:
+        # S’il n’y en a pas, enregistrez simplement
+        # que c’est un nouvel utilisateur.
         logger.debug("{} is new user".format(username))
 
     # S’il s’agit d’un nouvel utilisateur
     if not username_exist:
         # Créer un utilisateur dans la table auth_user
-        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=password, email=email)
+        user = User.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            email=email,
+        )
         # Connecter l’utilisateur et le rediriger vers la page de liste.
         login(request, user)
         data = {"userName":username,"status":"Authenticated"}
@@ -94,7 +100,8 @@ def get_cars(request):
 # # Update the `get_dealerships` view to render the index page with
 # a list of dealerships
 # def get_dealerships(request):
-#Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+#Update the `get_dealerships` render list
+# of dealerships all by default, particular state if state is passed
 def get_dealerships(request, state="All"):
     if(state == "All"):
         endpoint = "/fetchDealers"
@@ -131,12 +138,12 @@ def get_dealer_details(request, dealer_id):
 # Create a `add_review` view to submit a review
 # def add_review(request):
 def add_review(request):
-    if(request.user.is_anonymous == False):
+    if not request.user.is_anonymous:
         data = json.loads(request.body)
         try:
-            response = post_review(data)
+            post_review(data)
             return JsonResponse({"status":200})
-        except:
+        except Exception:
             return JsonResponse({"status":401,"message":"Error in posting review"})
     else:
         return JsonResponse({"status":403,"message":"Unauthorized"})
