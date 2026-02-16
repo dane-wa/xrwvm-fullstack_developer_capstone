@@ -9,7 +9,6 @@ class CarMake(models.Model):
     marque = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     description = models.TextField()
-
     
     def __str__(self):
         # - Méthode __str__ pour afficher
