@@ -7,7 +7,6 @@ from .restapis import (
     analyze_review_sentiments,
     post_review,
 )
-
 from django.http import JsonResponse
 import logging
 import json
@@ -20,11 +19,9 @@ from .populate import initiate
 logger = logging.getLogger(__name__)
 
 
-# Create your views here.
-
-# Crée une vue login_request pour gérer les requêtes de connexion.
 @csrf_exempt
 def login_user(request):
+    # Crée une vue login_request pour gérer les requêtes de connexion.
     # Récupérer le nom d’utilisateur et 
     # le mot de passe depuis le dictionnaire request.POST
     data = json.loads(request.body)
@@ -41,15 +38,17 @@ def login_user(request):
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
 
-# Créer une vue logout_request pour gérer la demande de déconnexion.
+
 def logout_request(request):
+    # Créer une vue logout_request pour gérer la demande de déconnexion.
     logout(request) # Mettre fin à la session de l’utilisateur
     data = {"userName":""} # Retourner un nom d’utilisateur vide
     return JsonResponse(data)
 
-# Crée une vue registration pour gérer les requêtes d’inscription.
+
 @csrf_exempt
 def registration(request):
+    # Crée une vue registration pour gérer les requêtes d’inscription.
     # Charger les données JSON à partir du corps de la requête.
     data = json.loads(request.body)
     username = data['userName']
@@ -81,7 +80,7 @@ def registration(request):
         login(request, user)
         data = {"userName":username,"status":"Authenticated"}
         return JsonResponse(data)
-    else :
+    else:
         data = {"userName":username,"error":"Already Registered"}
         return JsonResponse(data)
 
@@ -128,16 +127,16 @@ def get_dealer_reviews(request, dealer_id):
 # Create a `get_dealer_details` view to render the dealer details
 # def get_dealer_details(request, dealer_id):
 def get_dealer_details(request, dealer_id):
-    if(dealer_id):
+    if (dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
         return JsonResponse({"status":200,"dealer":dealership})
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
 
-# Create a `add_review` view to submit a review
-# def add_review(request):
+
 def add_review(request):
+    # Create a `add_review` view to submit a review
     if not request.user.is_anonymous:
         data = json.loads(request.body)
         try:
